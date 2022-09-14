@@ -8,7 +8,9 @@
 
 # Installation
 
-copy `.env`
+open [**infra/envs/dev.env**](./infra/envs/dev.env) and fill the empty values
+
+copy `envs/dev.env` file to `envs/.env`
 
 ```bash
 $ cp envs/dev.env envs/.env
