@@ -22,6 +22,10 @@ export class MskStack extends Stack {
       vpc: props.vpc,
       vpcSubnets: { subnetType: ec2.SubnetType.PRIVATE_WITH_EGRESS },
       securityGroups: [props.securytyGroup],
+      encryptionInTransit: {
+        clientBroker: msk.ClientBrokerEncryption.TLS_PLAINTEXT,
+        enableInCluster: true,
+      },
       instanceType: ec2.InstanceType.of(
         ec2.InstanceClass.T3,
         ec2.InstanceSize.SMALL
