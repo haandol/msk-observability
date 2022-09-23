@@ -8,12 +8,12 @@
 
 # Installation
 
-open [**infra/envs/dev.env**](./infra/envs/dev.env) and fill the empty values
+open [**infra/env/dev.env**](./infra/env/dev.env) and fill the empty values
 
-copy `envs/dev.env` file to `envs/.env`
+copy `env/dev.env` file to project root as `.env`
 
 ```bash
-$ cp envs/dev.env envs/.env
+$ cp env/dev.env .env
 ```
 
 ```bash

@@ -3,7 +3,7 @@ import * as joi from 'joi';
 import * as dotenv from 'dotenv';
 
 dotenv.config({
-  path: path.resolve(__dirname, '..', '..', 'envs', '.env'),
+  path: path.resolve(__dirname, '..', '..', '.env'),
 });
 
 const schema = joi
