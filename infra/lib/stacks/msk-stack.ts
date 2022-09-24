@@ -1,10 +1,4 @@
-import {
-  Stack,
-  StackProps,
-  CfnOutput,
-  RemovalPolicy,
-  Duration,
-} from 'aws-cdk-lib';
+import { Stack, StackProps, RemovalPolicy, Duration } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import * as cw from 'aws-cdk-lib/aws-cloudwatch';
 import * as cwActions from 'aws-cdk-lib/aws-cloudwatch-actions';
