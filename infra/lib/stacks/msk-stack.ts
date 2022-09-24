@@ -3,6 +3,7 @@ import { Construct } from 'constructs';
 import * as cw from 'aws-cdk-lib/aws-cloudwatch';
 import * as cwActions from 'aws-cdk-lib/aws-cloudwatch-actions';
 import * as sns from 'aws-cdk-lib/aws-sns';
+import * as logs from 'aws-cdk-lib/aws-logs';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import * as appasg from 'aws-cdk-lib/aws-applicationautoscaling';
 import * as msk from '@aws-cdk/aws-msk-alpha';
@@ -51,6 +52,12 @@ export class MskStack extends Stack {
           msk.ClusterMonitoringLevel.PER_TOPIC_PER_PARTITION,
         enablePrometheusJmxExporter: true,
         enablePrometheusNodeExporter: true,
+      },
+      logging: {
+        cloudwatchLogGroup: new logs.LogGroup(this, `${Config.Ns}MSKLogGroup`, {
+          logGroupName: `/aws/kafka/broker/${Config.Ns.toLowerCase()}`,
+          retention: logs.RetentionDays.TWO_WEEKS,
+        }),
       },
       removalPolicy: RemovalPolicy.DESTROY,
     });
