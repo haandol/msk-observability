@@ -13,11 +13,11 @@ open [**infra/env/dev.env**](./infra/env/dev.env) and fill the empty values
 copy `env/dev.env` file to project root as `.env`
 
 ```bash
+$ cd infra
 $ cp env/dev.env .env
 ```
 
 ```bash
-$ cd infra
 $ npm i
 ```
 
