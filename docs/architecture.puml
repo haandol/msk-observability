@@ -5,7 +5,7 @@
 !include <awslib/Analytics/ManagedStreamingforKafka.puml>
 
 package "VPC" {
-  ManagedStreamingforKafka(msk, "Kafka Cluster", " ")
+  ManagedStreamingforKafka(msk, "MSK Cluster", " ")
 }
 
 @enduml
