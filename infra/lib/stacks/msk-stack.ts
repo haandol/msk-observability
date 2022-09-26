@@ -11,7 +11,6 @@ import { Config } from '../configs/loader';
 
 interface IProps extends StackProps {
   vpc: ec2.IVpc;
-  securytyGroup: ec2.ISecurityGroup;
 }
 
 export class MskStack extends Stack {
@@ -35,13 +34,19 @@ export class MskStack extends Stack {
   }
 
   newCluster(props: IProps): msk.ICluster {
+    const securityGroup = new ec2.SecurityGroup(this, `MskSecurityGroup`, {
+      vpc: props.vpc,
+      securityGroupName: `${Config.Ns}MskSecurityGroup`,
+    });
+    securityGroup.connections.allowInternally(ec2.Port.allTraffic());
+
     const cluster = new msk.Cluster(this, `MskCluster`, {
       clusterName: `${Config.Ns.toLowerCase()}`,
       kafkaVersion: msk.KafkaVersion.V2_8_1,
       numberOfBrokerNodes: 1,
       vpc: props.vpc,
       vpcSubnets: { subnetType: ec2.SubnetType.PRIVATE_WITH_EGRESS },
-      securityGroups: [props.securytyGroup],
+      securityGroups: [securityGroup],
       instanceType: ec2.InstanceType.of(
         ec2.InstanceClass.M5,
         ec2.InstanceSize.LARGE
@@ -61,7 +66,6 @@ export class MskStack extends Stack {
       },
       removalPolicy: RemovalPolicy.DESTROY,
     });
-    cluster.connections.allowInternally(ec2.Port.allTraffic());
 
     // storage auto scaling
     // from 1000 (default) to 4096 Gib

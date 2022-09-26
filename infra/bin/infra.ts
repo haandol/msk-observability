@@ -12,7 +12,6 @@ console.log(Config);
 const vpcStack = new VpcStack(app, `${Config.Ns}VpcStack`);
 const mskStack = new MskStack(app, `${Config.Ns}MskStack`, {
   vpc: vpcStack.vpc,
-  securytyGroup: vpcStack.securityGroup,
 });
 mskStack.addDependency(vpcStack);
 

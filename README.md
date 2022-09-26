@@ -8,9 +8,9 @@
 
 # Installation
 
-open [**infra/env/dev.env**](./infra/env/dev.env) and fill the empty values
+open [**infra/env/dev.env**](/infra/env/dev.env) and fill the `VPC_ID` if necessary
 
-copy `env/dev.env` file to project root as `.env`
+and copy `env/dev.env` file to project root as `.env`
 
 ```bash
 $ cd infra

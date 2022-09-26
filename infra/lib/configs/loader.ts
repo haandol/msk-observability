@@ -7,16 +7,13 @@ dotenv.config({
 });
 
 const schema = joi
-  .object()
-  .keys({
+  .object({
     STAGE: joi.string().valid('Dev', 'Prod').required(),
     NS: joi.string().required(),
   })
   .unknown();
 
-const { value: envVars, error } = schema
-  .prefs({ errors: { label: 'key' } })
-  .validate(process.env);
+const { value: envVars, error } = schema.validate(process.env);
 
 if (error) {
   throw new Error(`Config validation error: ${error.message}`);
@@ -25,4 +22,5 @@ if (error) {
 export const Config = {
   Stage: envVars.STAGE,
   Ns: `${envVars.NS}${envVars.STAGE}`,
+  VpcID: envVars.VPC_ID,
 };
