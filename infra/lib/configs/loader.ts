@@ -17,9 +17,7 @@ const schema = joi
   })
   .unknown();
 
-const { value: envVars, error } = schema
-  .prefs({ errors: { label: 'key' } })
-  .validate(process.env);
+const { value: envVars, error } = schema.validate(process.env);
 
 if (error) {
   throw new Error(`Config validation error: ${error.message}`);
