@@ -1,0 +1,11 @@
+@startuml architecture
+
+!include <awslib/AWSCommon>
+!include <awslib/AWSSimplified.puml>
+!include <awslib/Analytics/ManagedStreamingforKafka.puml>
+
+package "VPC" {
+  ManagedStreamingforKafka(msk, "Kafka Cluster", " ")
+}
+
+@enduml
