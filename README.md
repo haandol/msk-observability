@@ -8,7 +8,11 @@
 
 # Installation
 
-open [**infra/env/dev.env**](/infra/env/dev.env) and fill the `VPC_ID` if necessary
+open [**infra/env/dev.env**](/infra/env/dev.env) and fill the blow fields
+
+- `VPC_ID` (optional): if necessary
+- `AWS_ACCOUNT_ID`: 12 digit account id
+- `AWS_REGION`: e.g. ap-northeast-2
 
 and copy `env/dev.env` file to project root as `.env`
 

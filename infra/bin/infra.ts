@@ -7,11 +7,18 @@ import { Config } from '../lib/configs/loader';
 
 const app = new cdk.App();
 
-console.log(Config);
-
-const vpcStack = new VpcStack(app, `${Config.Ns}VpcStack`);
+const vpcStack = new VpcStack(app, `${Config.Ns}VpcStack`, {
+  env: {
+    account: Config.AWS.Account,
+    region: Config.AWS.Region,
+  },
+});
 const mskStack = new MskStack(app, `${Config.Ns}MskStack`, {
   vpc: vpcStack.vpc,
+  env: {
+    account: Config.AWS.Account,
+    region: Config.AWS.Region,
+  },
 });
 mskStack.addDependency(vpcStack);
 
