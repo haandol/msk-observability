@@ -202,6 +202,7 @@ export class MskDashboard extends Construct {
         left: [metrics.offlinePartitionsCount],
         width: 8,
       }),
+
       new cw.GraphWidget({
         title: 'CPU User',
         left: [metrics.cpuUser],
@@ -212,6 +213,7 @@ export class MskDashboard extends Construct {
         left: [metrics.diskUsed],
         width: 12,
       }),
+
       new cw.GraphWidget({
         title: 'MaxOffsetLag',
         left: [metrics.maxOffsetLag],
