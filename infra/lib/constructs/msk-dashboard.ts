@@ -203,16 +203,24 @@ export class MskDashboard extends Construct {
         width: 8,
       }),
       new cw.GraphWidget({
-        title: 'CPU / Disk',
+        title: 'CPU User',
         left: [metrics.cpuUser],
-        right: [metrics.diskUsed],
-        width: 24,
+        width: 12,
+      }),
+      new cw.GraphWidget({
+        title: 'Disk Used',
+        left: [metrics.diskUsed],
+        width: 12,
+      }),
+      new cw.GraphWidget({
+        title: 'MaxOffsetLag',
+        left: [metrics.maxOffsetLag],
+        width: 12,
       }),
       new cw.GraphWidget({
         title: 'OffsetLag',
         left: [metrics.offsetLag],
-        right: [metrics.maxOffsetLag],
-        width: 24,
+        width: 12,
       })
     );
   }
