@@ -20,6 +20,7 @@ export class MskStack extends Stack {
     this.cluster = this.newCluster(props);
     new MskDashboard(this, `MskDashboard`, {
       cluster: this.cluster,
+      brokers: 2,
     });
   }
 
