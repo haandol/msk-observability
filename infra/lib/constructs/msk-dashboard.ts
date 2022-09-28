@@ -162,6 +162,7 @@ export class MskDashboard extends Construct {
     new cw.Alarm(this, `OfflinePartitionsCountAlarm`, {
       alarmName: `${Config.Ns}KafkaOfflinePartitionsCount`,
       metric: metrics.offlinePartitionsCount,
+      comparisonOperator: cw.ComparisonOperator.GREATER_THAN_THRESHOLD,
       threshold: 0,
       evaluationPeriods: 3,
     }).addAlarmAction(new cwActions.SnsAction(topic));
@@ -171,6 +172,7 @@ export class MskDashboard extends Construct {
       new cw.Alarm(this, `UnderReplicatedPartitionsAlarm${i}`, {
         alarmName: `${Config.Ns}KafkaUnderReplicatedPartitions${i}`,
         metric: metrics.underReplicatedPartitions[i],
+        comparisonOperator: cw.ComparisonOperator.GREATER_THAN_THRESHOLD,
         threshold: 0,
         evaluationPeriods: 3,
       }).addAlarmAction(new cwActions.SnsAction(topic));
@@ -181,6 +183,7 @@ export class MskDashboard extends Construct {
       new cw.Alarm(this, `CpuUser${i}`, {
         alarmName: `${Config.Ns}KafkaCpuUser${i}`,
         metric: metrics.cpuUser[i],
+        comparisonOperator: cw.ComparisonOperator.GREATER_THAN_THRESHOLD,
         threshold: 60,
         evaluationPeriods: 3,
       }).addAlarmAction(new cwActions.SnsAction(topic));
@@ -191,6 +194,8 @@ export class MskDashboard extends Construct {
       new cw.Alarm(this, `KafkaDataLogsDiskUsed${i}`, {
         alarmName: `${Config.Ns}KafkaDataLogsDiskUsed${i}`,
         metric: metrics.diskUsed[i],
+        comparisonOperator:
+          cw.ComparisonOperator.GREATER_THAN_OR_EQUAL_TO_THRESHOLD,
         threshold: 85,
         evaluationPeriods: 3,
       }).addAlarmAction(new cwActions.SnsAction(topic));
@@ -204,6 +209,8 @@ export class MskDashboard extends Construct {
       new cw.Alarm(this, `KafkaMaxOffsetLag-${consumerGroup}`, {
         alarmName: `${Config.Ns}KafkaMaxOffsetLag-${consumerGroup}`,
         metric,
+        comparisonOperator:
+          cw.ComparisonOperator.GREATER_THAN_OR_EQUAL_TO_THRESHOLD,
         threshold: 100,
         evaluationPeriods: 3,
       }).addAlarmAction(new cwActions.SnsAction(topic));
