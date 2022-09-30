@@ -25,7 +25,7 @@
     "aws-cdk-lib": "2.43.1",
     "constructs": "^10.0.0",
     "dotenv": "^16.0.2",
-    "joi": "^17.6.0",
+    "joi": "^17.6.2",
     "source-map-support": "^0.5.21"
   }
 }

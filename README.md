@@ -10,9 +10,12 @@
 
 open [**infra/env/dev.env**](/infra/env/dev.env) and fill the blow fields
 
-- `VPC_ID` (optional): if necessary
+> Remove all optional fields for empty value (empty value will be failed on validation)
+
+- `VPC_ID` (optional): if necessary.
+- `SUBNET_IDS` (optional, but it is required when the `VPC_ID` is given): if necessary, comma separated subnet ids. e.g. "subnet-xxxxxxxx,subnet-xxxxxxxx".
 - `AWS_ACCOUNT_ID`: 12 digit account id
-- `AWS_REGION`: e.g. ap-northeast-2
+- `AWS_REGION`: e.g. "ap-northeast-2"
 
 and copy `env/dev.env` file to project root as `.env`
 

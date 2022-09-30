@@ -31,12 +31,26 @@ export class MskStack extends Stack {
     });
     securityGroup.connections.allowInternally(ec2.Port.allTraffic());
 
+    // use provided subnets or lookup existing private subnets
+    let vpcSubnets: ec2.SubnetSelection;
+    if (Config.SubnetIDs.length === 0) {
+      vpcSubnets = {
+        subnetType: ec2.SubnetType.PRIVATE_WITH_EGRESS,
+      };
+    } else {
+      vpcSubnets = {
+        subnets: Config.SubnetIDs.map((subnetId, i) =>
+          ec2.PrivateSubnet.fromSubnetId(this, `PrivateSubnet${i}`, subnetId)
+        ),
+      };
+    }
+
     const cluster = new msk.Cluster(this, `MskCluster`, {
       clusterName: `${Config.Ns.toLowerCase()}`,
       kafkaVersion: msk.KafkaVersion.V2_8_1,
       numberOfBrokerNodes: 1,
       vpc: props.vpc,
-      vpcSubnets: { subnetType: ec2.SubnetType.PRIVATE_WITH_EGRESS },
+      vpcSubnets,
       securityGroups: [securityGroup],
       instanceType: ec2.InstanceType.of(
         ec2.InstanceClass.M5,
