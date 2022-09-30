@@ -21,8 +21,8 @@ module "kafka" {
   namespace = "pe"
   stage = "test"
   name = "msko11y"
-  vpc_id = "vpc-0dc9e60d117e95539"
-  subnet_ids = ["subnet-0aecbe866e3d195b3", "subnet-096dd40097ff0de91"]
+  vpc_id = "REPLACE_WITH_YOUR_VPC_ID"
+  subnet_ids = ["REPLACE_WITH_YOUR_SUBNET_ID", "REPLACE_WITH_YOUR_SUBNET_ID"]
   kafka_version = "2.8.1"
   broker_instance_type = "kafka.m5.large"
   broker_per_zone = 1
