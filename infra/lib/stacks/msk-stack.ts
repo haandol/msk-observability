@@ -4,6 +4,7 @@ import * as logs from 'aws-cdk-lib/aws-logs';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import * as appasg from 'aws-cdk-lib/aws-applicationautoscaling';
 import * as msk from '@aws-cdk/aws-msk-alpha';
+import { CfnConfiguration } from 'aws-cdk-lib/aws-msk';
 import { Config } from '../configs/loader';
 import { MskDashboard } from '../constructs/msk-dashboard';
 
@@ -17,14 +18,30 @@ export class MskStack extends Stack {
   constructor(scope: Construct, id: string, props: IProps) {
     super(scope, id, props);
 
-    this.cluster = this.newCluster(props);
+    const config = this.newConfiguration();
+    this.cluster = this.newCluster(props, {
+      arn: config.attrArn,
+      revision: 1,
+    });
+
     new MskDashboard(this, `MskDashboard`, {
       cluster: this.cluster,
       brokers: 2,
     });
   }
 
-  newCluster(props: IProps): msk.ICluster {
+  newConfiguration(): CfnConfiguration {
+    return new CfnConfiguration(this, `MskConfiguration`, {
+      name: `${Config.Ns}Configuration`,
+      serverProperties: ``,
+      kafkaVersionsList: ['2.8.1'],
+    });
+  }
+
+  newCluster(
+    props: IProps,
+    configurationInfo: msk.ClusterConfigurationInfo
+  ): msk.ICluster {
     const securityGroup = new ec2.SecurityGroup(this, `MskSecurityGroup`, {
       vpc: props.vpc,
       securityGroupName: `${Config.Ns}MskSecurityGroup`,
@@ -69,6 +86,7 @@ export class MskStack extends Stack {
           retention: logs.RetentionDays.TWO_WEEKS,
         }),
       },
+      configurationInfo,
       removalPolicy: RemovalPolicy.DESTROY,
     });
 
