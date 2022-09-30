@@ -1,6 +1,7 @@
 import * as path from 'path';
 import * as joi from 'joi';
 import * as dotenv from 'dotenv';
+import { SubnetValidator, VpcValidator } from './validators';
 
 interface IConfig {
   AWS: {
@@ -16,16 +17,15 @@ interface IConfig {
 dotenv.config({
   path: path.resolve(__dirname, '..', '..', '.env'),
 });
-
-console.log('process.env', process.env);
+console.debug('process.env', process.env);
 
 const schema = joi
   .object({
-    AWS_ACCOUNT_ID: joi.string().required(),
+    AWS_ACCOUNT_ID: joi.number().required(),
     AWS_REGION: joi.string().required(),
-    STAGE: joi.string().valid('Dev', 'Prod').required(),
-    VPC_ID: joi.string().optional(),
-    SUBNET_IDS: joi.string().optional(),
+    STAGE: joi.string().required(),
+    VPC_ID: joi.string().custom(VpcValidator).optional(),
+    SUBNET_IDS: joi.string().custom(SubnetValidator).optional(),
     NS: joi.string().required(),
   })
   .with('VPC_ID', 'SUBNET_IDS')
@@ -39,7 +39,7 @@ if (error) {
 
 export const Config: IConfig = {
   AWS: {
-    Account: envVars.AWS_ACCOUNT_ID,
+    Account: `${envVars.AWS_ACCOUNT_ID}`,
     Region: envVars.AWS_REGION,
   },
   Stage: envVars.STAGE,
