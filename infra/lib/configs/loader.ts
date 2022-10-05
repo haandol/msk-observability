@@ -8,8 +8,8 @@ interface IConfig {
     Account: string;
     Region: string;
   };
-  Stage: string;
   Ns: string;
+  Stage: string;
   VpcID: string;
   SubnetIDs: string[];
 }
@@ -23,10 +23,10 @@ const schema = joi
   .object({
     AWS_ACCOUNT_ID: joi.number().required(),
     AWS_REGION: joi.string().required(),
+    NS: joi.string().required(),
     STAGE: joi.string().required(),
     VPC_ID: joi.string().custom(VpcValidator).optional(),
     SUBNET_IDS: joi.string().custom(SubnetValidator).optional(),
-    NS: joi.string().required(),
   })
   .with('VPC_ID', 'SUBNET_IDS')
   .unknown();
@@ -42,8 +42,8 @@ export const Config: IConfig = {
     Account: `${envVars.AWS_ACCOUNT_ID}`,
     Region: envVars.AWS_REGION,
   },
-  Stage: envVars.STAGE,
   Ns: `${envVars.NS}${envVars.STAGE}`,
+  Stage: envVars.STAGE,
   VpcID: envVars.VPC_ID,
   SubnetIDs: envVars.SUBNET_IDS
     ? envVars.SUBNET_IDS.split(',').filter(Boolean)
