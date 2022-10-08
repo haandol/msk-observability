@@ -50,13 +50,13 @@ export class MskStack extends Stack {
 
     // use provided subnets or lookup existing private subnets
     let vpcSubnets: ec2.SubnetSelection;
-    if (Config.SubnetIDs.length === 0) {
+    if (Config.VPC.SubnetIDs.length === 0) {
       vpcSubnets = {
         subnetType: ec2.SubnetType.PRIVATE_WITH_EGRESS,
       };
     } else {
       vpcSubnets = {
-        subnets: Config.SubnetIDs.map((subnetId, i) =>
+        subnets: Config.VPC.SubnetIDs.map((subnetId, i) =>
           ec2.PrivateSubnet.fromSubnetId(this, `PrivateSubnet${i}`, subnetId)
         ),
       };

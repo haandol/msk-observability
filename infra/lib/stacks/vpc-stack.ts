@@ -10,9 +10,9 @@ export class VpcStack extends Stack {
     super(scope, id, props);
 
     // import or create vpc
-    if (Config.VpcID) {
+    if (Config.VPC.VpcID) {
       this.vpc = ec2.Vpc.fromLookup(this, `Vpc`, {
-        vpcId: Config.VpcID,
+        vpcId: Config.VPC.VpcID,
       });
     } else {
       this.vpc = new ec2.Vpc(this, `Vpc`, { maxAzs: 2 });

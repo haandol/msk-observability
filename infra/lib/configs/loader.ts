@@ -4,14 +4,16 @@ import * as dotenv from 'dotenv';
 import { SubnetValidator, VpcValidator } from './validators';
 
 interface IConfig {
+  Ns: string;
+  Stage: string;
+  VPC: {
+    VpcID: string;
+    SubnetIDs: string[];
+  };
   AWS: {
     Account: string;
     Region: string;
   };
-  Ns: string;
-  Stage: string;
-  VpcID: string;
-  SubnetIDs: string[];
 }
 
 dotenv.config({
@@ -21,12 +23,12 @@ console.debug('process.env', process.env);
 
 const schema = joi
   .object({
-    AWS_ACCOUNT_ID: joi.number().required(),
-    AWS_REGION: joi.string().required(),
     NS: joi.string().required(),
     STAGE: joi.string().required(),
     VPC_ID: joi.string().custom(VpcValidator).optional(),
     SUBNET_IDS: joi.string().custom(SubnetValidator).optional(),
+    AWS_ACCOUNT_ID: joi.number().required(),
+    AWS_REGION: joi.string().required(),
   })
   .with('VPC_ID', 'SUBNET_IDS')
   .unknown();
@@ -38,14 +40,16 @@ if (error) {
 }
 
 export const Config: IConfig = {
+  Ns: `${envVars.NS}${envVars.STAGE}`,
+  Stage: envVars.STAGE,
+  VPC: {
+    VpcID: envVars.VPC_ID,
+    SubnetIDs: envVars.SUBNET_IDS
+      ? envVars.SUBNET_IDS.split(',').filter(Boolean)
+      : '',
+  },
   AWS: {
     Account: `${envVars.AWS_ACCOUNT_ID}`,
     Region: envVars.AWS_REGION,
   },
-  Ns: `${envVars.NS}${envVars.STAGE}`,
-  Stage: envVars.STAGE,
-  VpcID: envVars.VPC_ID,
-  SubnetIDs: envVars.SUBNET_IDS
-    ? envVars.SUBNET_IDS.split(',').filter(Boolean)
-    : '',
 };
