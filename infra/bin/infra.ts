@@ -24,5 +24,6 @@ mskStack.addDependency(vpcStack);
 
 const tags = cdk.Tags.of(app);
 tags.add(`namespace`, Config.Ns);
+tags.add(`stage`, Config.Stage);
 
 app.synth();
