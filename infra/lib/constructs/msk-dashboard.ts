@@ -235,7 +235,6 @@ export class MskDashboard extends Construct {
     });
 
     const maxOffsetLagMetrics: cw.IMetric[] = [];
-
     appMetrics.maxOffsetLag.forEach((metric) => {
       maxOffsetLagMetrics.push(metric);
     });
@@ -266,13 +265,17 @@ export class MskDashboard extends Construct {
         title: 'Disk Used',
         left: mskMetrics.diskUsed,
         width: 12,
-      }),
-
-      new cw.GraphWidget({
-        title: 'MaxOffsetLag',
-        left: maxOffsetLagMetrics,
-        width: 12,
       })
     );
+
+    if (maxOffsetLagMetrics.length > 0) {
+      dashboard.addWidgets(
+        new cw.GraphWidget({
+          title: 'MaxOffsetLag',
+          left: maxOffsetLagMetrics,
+          width: 12,
+        })
+      );
+    }
   }
 }
