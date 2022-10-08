@@ -29,12 +29,12 @@ resource "aws_security_group" "sg" {
 
 resource "aws_msk_cluster" "kafka" {
   cluster_name           = "msko11y-dev"
-  kafka_version          = "2.8.1"
-  number_of_broker_nodes = 2
+  kafka_version          = "2.6.2"
+  number_of_broker_nodes = 3
   enhanced_monitoring = "PER_TOPIC_PER_BROKER"
 
   broker_node_group_info {
-    instance_type = "kafka.m5.large"
+    instance_type = "kafka.m5.xlarge"
     client_subnets = [
       "subnet-xxx",
       "subnet-xxx",
@@ -78,8 +78,8 @@ module "kafka" {
   name = "msko11y-dev"
   vpc_id = "REPLACE_WITH_YOUR_VPC_ID"
   subnet_ids = ["REPLACE_WITH_YOUR_SUBNET_ID", "REPLACE_WITH_YOUR_SUBNET_ID"]
-  kafka_version = "2.8.1"
-  broker_instance_type = "kafka.m5.large"
+  kafka_version = "2.6.2"
+  broker_instance_type = "kafka.m5.xlarge"
   broker_per_zone = 1
   broker_volume_size = 1000
   create_security_group = true # if false, associated_security_group_ids should be provided
