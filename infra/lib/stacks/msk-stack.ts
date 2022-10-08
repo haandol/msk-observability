@@ -33,8 +33,15 @@ export class MskStack extends Stack {
   newConfiguration(): CfnConfiguration {
     return new CfnConfiguration(this, `MskConfiguration`, {
       name: `${Config.Ns}Configuration`,
-      serverProperties: ``,
-      kafkaVersionsList: ['2.8.1'],
+      serverProperties: `
+      auto.create.topics.enable=false
+      default.replication.factor=3
+      log.retention.hours=376
+      log.retention.bytes=-1
+      unclean.leader.election.enable=false
+      min.insync.replicas=2
+      `,
+      kafkaVersionsList: ['2.6.2'],
     });
   }
 
@@ -64,7 +71,7 @@ export class MskStack extends Stack {
 
     const cluster = new msk.Cluster(this, `MskCluster`, {
       clusterName: `${Config.Ns.toLowerCase()}`,
-      kafkaVersion: msk.KafkaVersion.V2_8_1,
+      kafkaVersion: msk.KafkaVersion.V2_6_2,
       numberOfBrokerNodes: 1,
       vpc: props.vpc,
       vpcSubnets,
