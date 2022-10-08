@@ -41,22 +41,6 @@ export class MskDashboard extends Construct {
         id: 'trip',
         topic: 'trip-service',
       },
-      {
-        id: 'saga',
-        topic: 'saga-service',
-      },
-      {
-        id: 'car',
-        topic: 'car-service',
-      },
-      {
-        id: 'hotel',
-        topic: 'hotel-service',
-      },
-      {
-        id: 'flight',
-        topic: 'flight-service',
-      },
       */
     ];
     const appMetrics = this.newAppMetrics(consumerGroups, props);

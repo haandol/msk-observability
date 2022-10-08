@@ -71,7 +71,7 @@ export class MskStack extends Stack {
       securityGroups: [securityGroup],
       instanceType: ec2.InstanceType.of(
         ec2.InstanceClass.M5,
-        ec2.InstanceSize.LARGE
+        ec2.InstanceSize.XLARGE
       ),
       ebsStorageInfo: { volumeSize: 1000 },
       monitoring: {
