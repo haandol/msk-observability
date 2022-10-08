@@ -34,12 +34,12 @@ export class MskStack extends Stack {
     return new CfnConfiguration(this, `MskConfiguration`, {
       name: `${Config.Ns}Configuration`,
       serverProperties: `
-      auto.create.topics.enable=false
-      default.replication.factor=3
-      log.retention.hours=376
-      log.retention.bytes=-1
-      unclean.leader.election.enable=false
-      min.insync.replicas=2
+auto.create.topics.enable=false
+default.replication.factor=3
+log.retention.hours=376
+log.retention.bytes=-1
+unclean.leader.election.enable=false
+min.insync.replicas=2
       `,
       kafkaVersionsList: ['2.6.2'],
     });
