@@ -19,6 +19,11 @@ interface IMskMetrics {
   diskUsed: cw.IMetric[];
 }
 
+interface IConsumerGroup {
+  id: string;
+  topic: string;
+}
+
 interface IAppMetrics {
   maxOffsetLag: Map<string, cw.IMetric>;
 }
@@ -29,7 +34,30 @@ export class MskDashboard extends Construct {
 
     const topic = this.newTopic();
     const mskMetrics = this.newMskMetrics(props);
-    const appMetrics = this.newAppMetrics(props);
+
+    const consumerGroups: IConsumerGroup[] = [
+      {
+        id: 'trip',
+        topic: 'trip-service',
+      },
+      {
+        id: 'saga',
+        topic: 'saga-service',
+      },
+      {
+        id: 'car',
+        topic: 'car-service',
+      },
+      {
+        id: 'hotel',
+        topic: 'hotel-service',
+      },
+      {
+        id: 'flight',
+        topic: 'flight-service',
+      },
+    ];
+    const appMetrics = this.newAppMetrics(consumerGroups, props);
 
     this.newBrokerAlarms(mskMetrics, topic);
     this.newApplicationAlarms(appMetrics, topic);
@@ -121,14 +149,12 @@ export class MskDashboard extends Construct {
     };
   }
 
-  newAppMetrics(props: IProps): IAppMetrics {
-    // TODO: app metrics are should be moved to application infra
-    const consumerGroups = ['trip', 'saga', 'car', 'hotel', 'flight'];
-
+  // TODO: app metrics are should be moved to application infra
+  newAppMetrics(consumerGroups: IConsumerGroup[], props: IProps): IAppMetrics {
     const maxOffsetLag = new Map<string, cw.IMetric>();
-    for (let consumerGroup of consumerGroups) {
+    consumerGroups.forEach(({ id, topic }) => {
       maxOffsetLag.set(
-        consumerGroup,
+        id,
         new cw.Metric({
           namespace: 'AWS/Kafka',
           metricName: 'MaxOffsetLag',
@@ -136,12 +162,12 @@ export class MskDashboard extends Construct {
           statistic: cw.Statistic.MAXIMUM,
           dimensionsMap: {
             'Cluster Name': props.cluster.clusterName,
-            'Consumer Group': consumerGroup,
-            Topic: `${consumerGroup}-service`,
+            'Consumer Group': id,
+            Topic: topic,
           },
         })
       );
-    }
+    });
 
     return {
       maxOffsetLag,
