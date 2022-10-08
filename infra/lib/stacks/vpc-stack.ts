@@ -15,7 +15,7 @@ export class VpcStack extends Stack {
         vpcId: Config.VPC.VpcID,
       });
     } else {
-      this.vpc = new ec2.Vpc(this, `Vpc`, { maxAzs: 2 });
+      this.vpc = new ec2.Vpc(this, `Vpc`, { maxAzs: 3 });
     }
   }
 }
