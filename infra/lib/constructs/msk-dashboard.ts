@@ -36,6 +36,7 @@ export class MskDashboard extends Construct {
     const mskMetrics = this.newMskMetrics(props);
 
     const consumerGroups: IConsumerGroup[] = [
+      /*
       {
         id: 'trip',
         topic: 'trip-service',
@@ -56,6 +57,7 @@ export class MskDashboard extends Construct {
         id: 'flight',
         topic: 'flight-service',
       },
+      */
     ];
     const appMetrics = this.newAppMetrics(consumerGroups, props);
 
