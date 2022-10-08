@@ -44,9 +44,10 @@ export const Config: IConfig = {
   Stage: envVars.STAGE,
   VPC: {
     VpcID: envVars.VPC_ID,
-    SubnetIDs: envVars.SUBNET_IDS
-      ? envVars.SUBNET_IDS.split(',').filter(Boolean)
-      : '',
+    SubnetIDs:
+      envVars.SUBNET_IDS.length > 0
+        ? envVars.SUBNET_IDS.split(',').filter(Boolean)
+        : '',
   },
   AWS: {
     Account: `${envVars.AWS_ACCOUNT_ID}`,
