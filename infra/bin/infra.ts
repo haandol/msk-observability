@@ -8,6 +8,7 @@ import { Config } from '../lib/configs/loader';
 const app = new cdk.App();
 
 const vpcStack = new VpcStack(app, `${Config.Ns}VpcStack`, {
+  vpcId: Config.VPC.VpcID,
   env: {
     account: Config.AWS.Account,
     region: Config.AWS.Region,
