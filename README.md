@@ -13,7 +13,7 @@ open [**infra/env/dev.env**](/infra/env/dev.env) and fill the blow fields
 > Remove all optional fields for empty value (empty value will be failed on validation)
 
 - `VPC_ID` (optional): if necessary.
-- `SUBNET_IDS` (optional, but it is required when the `VPC_ID` is given): if necessary, comma separated subnet ids. e.g. "subnet-xxxxxxxx,subnet-xxxxxxxx".
+- `SUBNET_INFO` (optional, but it is required when the `VPC_ID` is given): if necessary, comma separated, paired subnet id and availability zone. e.g. "subnet-xxxxxxxx,az-1,subnet-xxxxxxxx,az-2".
 - `AWS_ACCOUNT_ID`: 12 digit account id
 - `AWS_REGION`: e.g. "ap-northeast-2"
 

@@ -57,16 +57,25 @@ min.insync.replicas=2
 
     // use provided subnets or lookup existing private subnets
     let vpcSubnets: ec2.SubnetSelection;
-    if (Config.VPC.SubnetIDs.length === 0) {
+    if (Config.VPC.SubnetMap.size === 0) {
       vpcSubnets = {
         subnetType: ec2.SubnetType.PRIVATE_WITH_EGRESS,
       };
     } else {
-      vpcSubnets = {
-        subnets: Config.VPC.SubnetIDs.map((subnetId, i) =>
-          ec2.PrivateSubnet.fromSubnetId(this, `PrivateSubnet${i}`, subnetId)
-        ),
-      };
+      const subnets = [];
+      for (const [subnetId, az] of Config.VPC.SubnetMap) {
+        subnets.push(
+          ec2.PrivateSubnet.fromPrivateSubnetAttributes(
+            this,
+            `Subnet-${subnetId}`,
+            {
+              subnetId,
+              availabilityZone: az,
+            }
+          )
+        );
+      }
+      vpcSubnets = { subnets };
     }
 
     const cluster = new msk.Cluster(this, `MskCluster`, {

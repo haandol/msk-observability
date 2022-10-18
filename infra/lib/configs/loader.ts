@@ -1,14 +1,14 @@
 import * as path from 'path';
 import * as joi from 'joi';
 import * as dotenv from 'dotenv';
-import { SubnetValidator, VpcValidator } from './validators';
+import { VpcValidator } from './validators';
 
 interface IConfig {
   Ns: string;
   Stage: string;
   VPC: {
     VpcID: string;
-    SubnetIDs: string[];
+    SubnetMap: Map<string, string>; // subnetId -> az
   };
   AWS: {
     Account: string;
@@ -26,7 +26,7 @@ const schema = joi
     NS: joi.string().required(),
     STAGE: joi.string().required(),
     VPC_ID: joi.string().custom(VpcValidator).optional(),
-    SUBNET_IDS: joi.string().custom(SubnetValidator).optional(),
+    SUBNET_INFO: joi.string().optional(),
     AWS_ACCOUNT_ID: joi.number().required(),
     AWS_REGION: joi.string().required(),
   })
@@ -39,14 +39,40 @@ if (error) {
   throw new Error(`Config validation error: ${error.message}`);
 }
 
+const buildSubnetMap = (subnetInfo: string): Map<string, string> => {
+  const subnetMap = new Map<string, string>();
+  if (!subnetInfo) {
+    return subnetMap;
+  }
+
+  const infoArr = subnetInfo.split(',').filter(Boolean);
+  if (infoArr.length % 2 !== 0) {
+    throw new Error(
+      `Invalid subnet info. SUBNET_INFO value should go like, "subnet-123,az-1,subnet-234,az-2": ${subnetInfo}`
+    );
+  }
+
+  for (let i = 0; i < infoArr.length; i += 2) {
+    const subnetId = infoArr[i];
+    const az = infoArr[i + 1];
+    if (!subnetId.startsWith('subnet-')) {
+      throw new Error(`Invalid subnet ID: ${subnetId}`);
+    }
+    if (!az.startsWith('az-')) {
+      throw new Error(`Invalid AZ: ${az}`);
+    }
+    subnetMap.set(subnetId, az);
+  }
+
+  return subnetMap;
+};
+
 export const Config: IConfig = {
   Ns: `${envVars.NS}${envVars.STAGE}`,
   Stage: envVars.STAGE,
   VPC: {
     VpcID: envVars.VPC_ID,
-    SubnetIDs: envVars.SUBNET_IDS
-      ? envVars.SUBNET_IDS.split(',').filter(Boolean)
-      : '',
+    SubnetMap: buildSubnetMap(envVars.SUBNET_INFO),
   },
   AWS: {
     Account: `${envVars.AWS_ACCOUNT_ID}`,
