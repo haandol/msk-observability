@@ -1,4 +1,4 @@
-import { Stack, StackProps, RemovalPolicy } from 'aws-cdk-lib';
+import { Stack, StackProps, RemovalPolicy, CfnOutput } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import * as logs from 'aws-cdk-lib/aws-logs';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
@@ -122,6 +122,11 @@ min.insync.replicas=2
         appasg.PredefinedMetric.KAFKA_BROKER_STORAGE_UTILIZATION,
       targetValue: 75,
       disableScaleIn: true,
+    });
+
+    new CfnOutput(this, `MskSecurityGroupId`, {
+      exportName: `${Config.Ns}MskSecurityGroupId`,
+      value: securityGroup.securityGroupId,
     });
 
     return cluster;
