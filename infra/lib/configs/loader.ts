@@ -30,7 +30,7 @@ const schema = joi
     AWS_ACCOUNT_ID: joi.number().required(),
     AWS_REGION: joi.string().required(),
   })
-  .with('VPC_ID', 'SUBNET_IDS')
+  .with('VPC_ID', 'SUBNET_INFO')
   .unknown();
 
 const { value: envVars, error } = schema.validate(process.env);
