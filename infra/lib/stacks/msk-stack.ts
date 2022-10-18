@@ -98,7 +98,6 @@ min.insync.replicas=2
       },
       logging: {
         cloudwatchLogGroup: new logs.LogGroup(this, `${Config.Ns}MSKLogGroup`, {
-          logGroupName: `/aws/kafka/broker/${Config.Ns.toLowerCase()}`,
           retention: logs.RetentionDays.TWO_WEEKS,
           removalPolicy: RemovalPolicy.DESTROY,
         }),
