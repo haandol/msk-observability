@@ -58,9 +58,6 @@ const buildSubnetMap = (subnetInfo: string): Map<string, string> => {
     if (!subnetId.startsWith('subnet-')) {
       throw new Error(`Invalid subnet ID: ${subnetId}`);
     }
-    if (!az.startsWith('az-')) {
-      throw new Error(`Invalid AZ: ${az}`);
-    }
     subnetMap.set(subnetId, az);
   }
 
