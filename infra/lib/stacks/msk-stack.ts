@@ -124,7 +124,7 @@ min.insync.replicas=2
       disableScaleIn: true,
     });
 
-    new CfnOutput(this, `MskSecurityGroupId`, {
+    new CfnOutput(this, `MskSecurityGroupOutput`, {
       exportName: `${Config.Ns}MskSecurityGroupId`,
       value: securityGroup.securityGroupId,
     });
