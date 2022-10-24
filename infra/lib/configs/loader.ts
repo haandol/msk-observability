@@ -2,19 +2,7 @@ import * as path from 'path';
 import * as joi from 'joi';
 import * as dotenv from 'dotenv';
 import { VpcValidator } from './validators';
-
-interface IConfig {
-  Ns: string;
-  Stage: string;
-  VPC: {
-    VpcID: string;
-    SubnetMap: Map<string, string>; // subnetId -> az
-  };
-  AWS: {
-    Account: string;
-    Region: string;
-  };
-}
+import { IConfig } from './interface';
 
 dotenv.config({
   path: path.resolve(__dirname, '..', '..', '.env'),
